@@ -39,23 +39,40 @@ public class Results {
 
 	public static class Builder {
 		private final Result result = new Result();
-
-		//请求接口状态码
+		
+		/**
+		 * 请求接口状态码
+		 */
 		private int status = 200;
-
-		//数据请求状态码 
+		
+		/**
+		 * 数据请求状态码, 0 成功, 1 失败
+ 		 */ 
 		private int code = 0;
-
-		//数据请求返回消息
+		
+		/**
+		 * 数据请求返回消息
+		 */
 		private Object message = "OK";
-
+		
+		/**
+		 * 调试消息
+		 */
 		private Object debugMessage;
-
+		
+		/**
+		 * 分页参数
+		 */
 		private Page page;
-
-		//单个数据对象
+		
+		/**
+		 * 单个数据对象
+		 */
 		private Object data;
-
+		
+		/**
+		 * 返回集合类型对象
+		 */
 		private Collection<?> results;
 
 		public Builder success() {
@@ -129,9 +146,9 @@ public class Results {
 		 * @param data
 		 * @return
 		 */
-		public Builder result(Object data) {
+		public Result result(Object data) {
 			this.data = data;
-			return this;
+			return build();
 		}
 
 		/**
@@ -140,9 +157,9 @@ public class Results {
 		 * @param results
 		 * @return
 		 */
-		public Builder results(Collection<?> results) {
+		public Result results(Collection<?> results) {
 			this.results = results;
-			return this;
+			return build();
 		}
 
 		/**

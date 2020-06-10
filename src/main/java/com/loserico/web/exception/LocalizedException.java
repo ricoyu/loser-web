@@ -1,6 +1,6 @@
 package com.loserico.web.exception;
 
-import com.loserico.web.utils.CollectionUtils;
+import com.loserico.common.lang.utils.CollectionUtils;
 import com.loserico.web.utils.MessageHelper;
 
 import java.util.ArrayList;

@@ -33,51 +33,52 @@ import static java.time.format.DateTimeFormatter.ofPattern;
  */
 @ControllerAdvice
 public class GlobalBindingAdvice {
-
+	
 	private static final Logger logger = LoggerFactory.getLogger(GlobalBindingAdvice.class);
-
+	
 	private static final String WHITE_SPACES = " ";
-
+	
 	/**
 	 * yyyy-MM-dd HH:mm:ss
 	 */
 	private static final String DATETIME = "\\d{4}-\\d{2}-\\d{2}(\\s+)\\d{2}:\\d{2}:\\d{2}";
 	private static final Pattern DATETIME_PATTERN = Pattern.compile(DATETIME);
 	private static final DateTimeFormatter DATETIME_FORMATTER = ofPattern("yyyy-MM-dd HH:mm:ss");
-
+	
 	/**
 	 * yyyy-MM-dd
 	 */
 	private static final String DATE = "\\d{4}-\\d{2}-\\d{2}";
 	private static final Pattern DATE_PATTERN = Pattern.compile(DATE);
 	private static final DateTimeFormatter DATE_FORMATTER = ofPattern("yyyy-MM-dd");
-
-
+	
+	
 	/**
 	 * HH:mm:ss 17:17:29
 	 */
 	private static final String TIME_LONG = "\\d{2}:\\d{2}:\\d{2}";
 	private static final Pattern TIME_LONG_PATTERN = Pattern.compile(TIME_LONG);
-
-
+	
+	
 	/**
 	 * HH:mm 17:18
 	 */
 	private static final String TIME_MIDDLE = "\\d{2}:\\d{2}";
 	private static final Pattern TIME_MIDDLE_PATTERN = Pattern.compile(TIME_MIDDLE);
-
+	
 	public static final DateTimeFormatter TIME_LONG_FORMATTER = ofPattern("HH:mm:ss");
 	public static final DateTimeFormatter TIME_SHORT_PATTERN = ofPattern("HH:mm");
-
+	
 	@InitBinder
 	public void binder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new DateEditor());
 		binder.registerCustomEditor(LocalDate.class, new LocalDateEditor());
 		binder.registerCustomEditor(LocalDateTime.class, new LocalDateTimeEditor());
+		binder.registerCustomEditor(LocalTime.class, new LocalTimeEditor());
 	}
-
-	private class DateEditor extends PropertyEditorSupport {
-
+	
+	public class DateEditor extends PropertyEditorSupport {
+		
 		@Override
 		public void setAsText(String text) throws IllegalArgumentException {
 			if (StringUtils.isBlank(text)) {
@@ -95,7 +96,7 @@ public class GlobalBindingAdvice {
 						setValue(result);
 						return;
 					}
-
+					
 					if (matches(DATE_PATTERN, text)) {
 						result = DateUtils.parse(text, DateUtils.FMT_ISO_DATE);
 						setValue(result);
@@ -104,14 +105,14 @@ public class GlobalBindingAdvice {
 				} catch (Exception e) {
 					logger.error("msg", e);
 				}
-
+				
 			}
 		}
-
+		
 	}
-
-	private class LocalDateTimeEditor extends PropertyEditorSupport {
-
+	
+	public class LocalDateTimeEditor extends PropertyEditorSupport {
+		
 		@Override
 		public void setAsText(String text) throws IllegalArgumentException {
 			if (StringUtils.isBlank(text)) {
@@ -127,15 +128,15 @@ public class GlobalBindingAdvice {
 				} catch (Exception e) {
 					logger.error("msg", e);
 				}
-
+				
 				setValue(result);
 			}
 		}
-
+		
 	}
-
-	private class LocalDateEditor extends PropertyEditorSupport {
-
+	
+	public class LocalDateEditor extends PropertyEditorSupport {
+		
 		@Override
 		public void setAsText(String text) throws IllegalArgumentException {
 			if (StringUtils.isBlank(text)) {
@@ -149,15 +150,15 @@ public class GlobalBindingAdvice {
 				} catch (Exception e) {
 					logger.error("{} 转换成LocalDate失败", text);
 				}
-
+				
 				setValue(result);
 			}
 		}
-
+		
 	}
-
-	private class LocalTimeEditor extends PropertyEditorSupport {
-
+	
+	public class LocalTimeEditor extends PropertyEditorSupport {
+		
 		@Override
 		public void setAsText(String text) throws IllegalArgumentException {
 			if (StringUtils.isBlank(text)) {
@@ -173,13 +174,13 @@ public class GlobalBindingAdvice {
 				} catch (Exception e) {
 					logger.error("msg", e);
 				}
-
+				
 				setValue(result);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	 * 测试给定text是否匹配给定模式
 	 *
@@ -191,5 +192,5 @@ public class GlobalBindingAdvice {
 		Matcher matcher = pattern.matcher(text);
 		return matcher.matches();
 	}
-
+	
 }

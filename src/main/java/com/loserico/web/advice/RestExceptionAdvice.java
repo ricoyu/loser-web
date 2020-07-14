@@ -5,15 +5,14 @@ import com.loserico.common.lang.exception.ValidationException;
 import com.loserico.common.lang.utils.ReflectionUtils;
 import com.loserico.common.lang.vo.Result;
 import com.loserico.common.lang.vo.Results;
-import com.loserico.web.bean.ErrorMessage;
-import com.loserico.web.exception.ApplicationException;
-import com.loserico.web.exception.CommonException;
-import com.loserico.web.exception.GeneralValidationException;
+import com.loserico.validation.bean.ErrorMessage;
+import com.loserico.validation.exception.GeneralValidationException;
+import com.loserico.validation.exception.UniqueConstraintViolationException;
+import com.loserico.validation.utils.ValidationUtils;
 import com.loserico.web.exception.LocalizedException;
-import com.loserico.web.exception.UniqueConstraintViolationException;
 import com.loserico.web.utils.MessageHelper;
-import com.loserico.web.utils.ValidationUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CORBA.portable.ApplicationException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -183,14 +182,6 @@ public class RestExceptionAdvice extends ResponseEntityExceptionHandler {
 		Result result = Results.status("400", "Bad Request")
 				.debugMessage(e.getMessage())
 				.build();
-		return new ResponseEntity(result, HttpStatus.OK);
-	}
-	
-	@ExceptionHandler(CommonException.class)
-	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<Object> handleCommonException(CommonException e) {
-		logger.error("", e);
-		Result result = Results.status(e.getStatusCode() + "", e.getDefaultMessage()).build();
 		return new ResponseEntity(result, HttpStatus.OK);
 	}
 	

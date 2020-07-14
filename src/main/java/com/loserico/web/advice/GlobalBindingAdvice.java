@@ -1,6 +1,7 @@
 package com.loserico.web.advice;
 
-import com.loserico.web.utils.DateUtils;
+import com.loserico.common.lang.constants.DateConstants;
+import com.loserico.common.lang.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,15 +93,14 @@ public class GlobalBindingAdvice {
 						if (!equalTo(spaces, WHITE_SPACES)) {
 							text = text.replace(spaces, WHITE_SPACES);
 						}
-						result = DateUtils.parse(text, DateUtils.FMT_ISO_DATE_TIME);
+						result = DateUtils.parse(text, DateConstants.FMT_ISO_DATETIME);
 						setValue(result);
 						return;
 					}
 					
 					if (matches(DATE_PATTERN, text)) {
-						result = DateUtils.parse(text, DateUtils.FMT_ISO_DATE);
+						result = DateUtils.parse(text, DateConstants.FMT_ISO_DATE);
 						setValue(result);
-						return;
 					}
 				} catch (Exception e) {
 					logger.error("msg", e);
